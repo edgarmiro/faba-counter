@@ -13,6 +13,7 @@ const playersRef = know.child('players');
 // Dialogflow Intent names
 const ADD_FABA_INTENT = 'add-faba'
 const COUNT_FABA_INTENT = 'count-faba'
+const REMOVE_FABA_INTENT = 'remove-faba'
 
 // Context Parameters
 const PLAYER_NAME_PARAM = 'faba_player';
@@ -26,6 +27,7 @@ exports.contafaba = functions.https.onRequest((request, response) => {
    let actionMap = new Map();
    actionMap.set(ADD_FABA_INTENT, addFaba);
    actionMap.set(COUNT_FABA_INTENT, countFaba);
+   actionMap.set(REMOVE_FABA_INTENT, removeFaba);
    assistant.handleRequest(actionMap);
 
    function addFaba(assistant) {
@@ -56,6 +58,19 @@ exports.contafaba = functions.https.onRequest((request, response) => {
 
             const speech = `<speak>${playerName} lleva ${count} fabas</speak>`;
             assistant.ask(speech);
+        });
+   }
+
+   function removeFaba(assistant) {
+        console.log('removeFaba');
+        const playerName = assistant.getArgument(PLAYER_NAME_PARAM);
+
+        playersRef.child(playerName).once('value', snap => {
+            var count = (snap.val() !== null) ? snap.val().count : 0;
+
+            playersRef.child(playerName).set({
+                count: count - 1
+            });
         });
    }
 });
