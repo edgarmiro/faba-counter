@@ -42,6 +42,8 @@ exports.contafaba = functions.https.onRequest((request, response) => {
 
             //const speech = `<speak>Faba añadida a ${playerName}</speak>`;
             //assistant.ask(speech);
+
+            // TODO: Hola
         });
    }
 
