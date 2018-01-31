@@ -35,8 +35,7 @@ exports.contafaba = functions.https.onRequest((request, response) => {
         const playerName = assistant.getArgument(PLAYER_NAME_PARAM);
 
         playersRef.child(playerName).once('value', snap => {
-            //(snap.val() || {}).count || 0
-            var count = (snap.val() !== null) ? snap.val().count : 0;
+            var count = (snap.val() || {}).count || 0
 
             playersRef.child(playerName).set({
                 count: count + 1
@@ -44,8 +43,6 @@ exports.contafaba = functions.https.onRequest((request, response) => {
 
             //const speech = `<speak>Faba añadida a ${playerName}</speak>`;
             //assistant.ask(speech);
-
-            // TODO: Hola
         });
    }
 
@@ -54,7 +51,7 @@ exports.contafaba = functions.https.onRequest((request, response) => {
         const playerName = assistant.getArgument(PLAYER_NAME_PARAM);
 
         playersRef.child(playerName).once('value', snap => {
-            var count = (snap.val() !== null) ? snap.val().count : 0;
+            var count = (snap.val() || {}).count || 0
 
             const speech = `<speak>${playerName} lleva ${count} fabas</speak>`;
             assistant.ask(speech);
@@ -66,7 +63,7 @@ exports.contafaba = functions.https.onRequest((request, response) => {
         const playerName = assistant.getArgument(PLAYER_NAME_PARAM);
 
         playersRef.child(playerName).once('value', snap => {
-            var count = (snap.val() !== null) ? snap.val().count : 0;
+            var count = (snap.val() || {}).count || 0
 
             playersRef.child(playerName).set({
                 count: count - 1
